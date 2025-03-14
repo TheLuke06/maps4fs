@@ -1,0 +1,31 @@
+"""This module contains provider of Weinbergen data."""
+
+from maps4fs.generator.dtm.base.wcs import WCSProvider
+from maps4fs.generator.dtm.dtm import DTMProvider
+
+
+class WeinbergenProvider(DTMProvider):
+    """Provider of Weinbergen20x20km DTM1 data."""
+
+    _code = "Weinbergen"
+    _name = "Weinbergen20x20km"
+    _region = "DE"
+    _icon = "🇩🇪"
+    _resolution = "1"
+    _author = "[TheLuke]"
+    _is_community = True
+    _instructions = None
+    _is_base = False
+    _extents = [(51.116186086396084, 10.417949373652371, 51.29636626657627, 10.703663659366656)]
+
+    _url = "https://geoportal.geoportal-th.de/gaialight-th/_apps/dladownload/dl-dhm.html"
+    _wcs_version = "1.1.1"
+    _source_crs = "EPSG:25832"
+    _tile_size = 1000
+    
+    def get_wcs_parameters(self, tile):
+        return {
+            "identifier": ["EL.ElevationGridCoverage"],
+            "subsets": [("E", str(tile[1]), str(tile[3])), ("N", str(tile[0]), str(tile[2]))],
+            "format": "image/tiff",
+        }
